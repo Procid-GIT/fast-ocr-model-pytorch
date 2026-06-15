@@ -1,5 +1,5 @@
-# OCR-Digits-Model
-Simple OCR for recognizing numbers and digits.
+# OCR-Model
+Simple OCR for recognizing numbers and digits as of now.
 <img width="1465" height="723" alt="image" src="https://github.com/user-attachments/assets/e1ec1b4f-b56e-4b74-8244-fc2278645882" />
 <img width="1465" height="723" alt="image" src="https://github.com/user-attachments/assets/cac5c5b2-6402-40fc-88b1-fd2a14013d7e" />
 _______________________________
