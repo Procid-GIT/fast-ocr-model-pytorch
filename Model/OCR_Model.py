@@ -26,7 +26,7 @@ class OCRModel(nn.Module):
             nn.ReLU(),
             nn.Linear(128, 64),
             nn.ReLU(),
-            nn.Linear(64, 10)
+            nn.Linear(64, 26)
         )
     
     def forward(self, x):
@@ -38,6 +38,7 @@ if __name__ == "__main__":
     # AI model training retrieval
     transform = transforms.Compose([
         transforms.ToTensor(),
+        transforms.Lambda(lambda x: x.transpose(1, 2)),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
 
