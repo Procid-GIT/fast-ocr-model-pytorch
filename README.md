@@ -10,3 +10,5 @@ The AI can only recognize individual characters by themselves, although I eventu
 <p>&nbsp; Also, I plan on this being my first REPO to have a release.  
   I will add the releases soon, as both its ZIP, and its EXE, 
   which contain the model's pt and the program for interacting with it.  </p>
+
+<p>Latest notes:  The AI is extremely inaccurate, i plan on fixing that later.</p>
