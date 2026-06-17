@@ -39,7 +39,7 @@ if __name__ == "__main__":
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Lambda(lambda x: x.transpose(1, 2)),
-        transforms.Normalize((0.1307,), (0.3081,))
+        transforms.Normalize((0.1751,), (0.3332,))
     ])
 
     print(f"[{datetime.now()}][Status] Downloading Dataset... Pulling from EMNIST dataset..")

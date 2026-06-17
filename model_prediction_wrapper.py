@@ -13,7 +13,13 @@ def prediction_decode(output):
     conf, index_t = torch.max(probabilities, dim=1)
     predicted_index = index_t.item()
     conf_p = conf.item() * 100
-    labels = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    labels = [
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 
+    'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 
+    'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'd', 'e', 'f', 'g', 'h', 'n', 'q', 'r', 't'
+    ]
     predicted_char = labels[predicted_index]
 
     return predicted_char, conf_p
@@ -27,40 +33,42 @@ def predict():
         print("[Status] Opening Image...")
         try:
             image = Image.open(file_path).convert("L")
-            image = F.invert(image) 
 
             transform = transforms.Compose([
                 transforms.Resize((28, 28)),
                 transforms.ToTensor(),
-                transforms.Normalize(mean=(0.1307,), std=(0.3081,))
+                transforms.Normalize(mean=(0.1751,), std=(0.3332,))
             ])
 
             x = transform(image).unsqueeze(0)
+            x = torch.transpose(x, 2, 3) 
 
             print(f"[AI] AI is thinking...")
             with torch.no_grad():
-                predict = model(x)
+                predicted = model(x)
 
             print(f"[AI] Decoding prediction...")
-            predicted_digit, conf = prediction_decode(predict)
+            predicted_digit, conf = prediction_decode(predicted)
             result.value = f"I feel {conf:.2f}% confident that I saw the digit {predicted_digit}"
             print(f"[AI] I feel {conf:.2f}% confident that I read the digit {predicted_digit}")
         except Exception as e:
             result.value = f"Error :/"
-            print(f"[Error] e")
+            print(f"[Error] {e}")
     else:
         print("[Status] Cancelled")
 
 print("[Status] Loading Model...")
 script_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(script_dir, "OCR_Model.pth")
-model = torch.load("OCR_Model.pth", weights_only=False)
+model_path = os.path.join(script_dir, "OCR_Model.pt")
+state_dic = torch.load(model_path, weights_only=True)
+model = OCRModel()
+model.load_state_dict(state_dic)
 model.eval()
 print("[Info] Model Loaded")    
 
 app = App("Optical Character Recognizer(Digits)", width=500, height=250)
 info = Text(app, text="Welcome to Optical Character Recognizer.  Upload file for recognition.")
-info2 = Text(app, text="As of now, this app cannot currently recognize \n letters.  It can only recognize the digits of 0 to 9.")
+info2 = Text(app, text="As of now, this app cannot recognize characters as full sentences, \n like this.  Such changes is for the future to be added.")
 menu = MenuBar(app, 
                toplevel=["File"],
                options=[ 
