@@ -26,7 +26,7 @@ class OCRModel(nn.Module):
             nn.ReLU(),
             nn.Linear(128, 64),
             nn.ReLU(),
-            nn.Linear(64, 26)
+            nn.Linear(64, 47)
         )
     
     def forward(self, x):
@@ -42,9 +42,10 @@ if __name__ == "__main__":
         transforms.Normalize((0.1307,), (0.3081,))
     ])
 
-    print(f"[{datetime.now()}][Status] Downloading Dataset... Pulling from MNIST dataset..")
-    train_dataset = torchvision.datasets.MNIST(
+    print(f"[{datetime.now()}][Status] Downloading Dataset... Pulling from EMNIST dataset..")
+    train_dataset = torchvision.datasets.EMNIST(
         root='./data',
+        split='balanced',
         train=True,
         download=True,
         transform=transform
@@ -56,7 +57,6 @@ if __name__ == "__main__":
     # === Initialize Trainer ===
     print(f"[{datetime.now()}][Status] Data retrieved.  Initializing Model Trainer...")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model = OCRModel()
     model = OCRModel().to(device)
     print(f"[{datetime.now()}][Status] Loaded Model")
     criterion = nn.CrossEntropyLoss()
