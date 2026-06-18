@@ -5,8 +5,6 @@ import torchvision.transforms as transforms
 from Model.OCR_Model import OCRModel
 import torchvision.transforms.functional as F
 import torch.nn.functional as C
-from guizero import App, Text, MenuBar
-from tkinter import filedialog
 
 def prediction_decode(output):
     probabilities = C.softmax(output, dim=1)
@@ -24,15 +22,10 @@ def prediction_decode(output):
 
     return predicted_char, conf_p
 
-def predict():
-    file_path = filedialog.askopenfilename(
-        title="Open Image",
-        filetypes=[("Image Files", "*.png *.jpg *.jpeg *.bmp"), ("All Files", "*.*")]
-        )
-    if file_path:
+def predict(image):
         print("[Status] Opening Image...")
         try:
-            image = Image.open(file_path).convert("L")
+            image_input = Image.open(image).convert("L")
 
             transform = transforms.Compose([
                 transforms.Resize((28, 28)),
@@ -40,7 +33,7 @@ def predict():
                 transforms.Normalize(mean=(0.1751,), std=(0.3332,))
             ])
 
-            x = transform(image).unsqueeze(0)
+            x = transform(image_input).unsqueeze(0)
             x = torch.transpose(x, 2, 3) 
 
             print(f"[AI] AI is thinking...")
@@ -49,13 +42,13 @@ def predict():
 
             print(f"[AI] Decoding prediction...")
             predicted_digit, conf = prediction_decode(predicted)
-            result.value = f"I feel {conf:.2f}% confident that I saw the digit {predicted_digit}"
-            print(f"[AI] I feel {conf:.2f}% confident that I read the digit {predicted_digit}")
+            output = f"[AI] I feel {conf:.2f}% confident that I read the digit {predicted_digit}"
+            print(output)
+            return output
         except Exception as e:
-            result.value = f"Error :/"
             print(f"[Error] {e}")
-    else:
-        print("[Status] Cancelled")
+            return "Error"
+
 
 print("[Status] Loading Model...")
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -64,16 +57,4 @@ state_dic = torch.load(model_path, weights_only=True)
 model = OCRModel()
 model.load_state_dict(state_dic)
 model.eval()
-print("[Info] Model Loaded")    
-
-app = App("Optical Character Recognizer(Digits)", width=500, height=250)
-info = Text(app, text="Welcome to Optical Character Recognizer.  Upload file for recognition.")
-info2 = Text(app, text="As of now, this app cannot recognize characters as full sentences, \n like this.  Such changes is for the future to be added.")
-menu = MenuBar(app, 
-               toplevel=["File"],
-               options=[ 
-                   [ ["Open", predict] ] 
-                ])
-result = Text(app, text=" ")
-
-app.display()
+print("[Info] Model Loaded")
