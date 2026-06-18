@@ -9,7 +9,7 @@ from model_prediction_wrapper import predict
 
 app = Flask(__name__)
 
-CORS(app, origins=["https://Procid-GIT.github.io/OCR-Digits-Model"])
+CORS(app, resources={r"/api/*": {"origins": "https://github.io"}})
 
 @app.route('/api/predict', methods=['POST'])
 def get_ai_prediction():
