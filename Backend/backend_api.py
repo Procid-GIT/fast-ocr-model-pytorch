@@ -13,9 +13,9 @@ CORS(app, resources={r"/api/*": {"origins": "https://github.io"}})
 
 @app.route('/api/predict', methods=['POST'])
 def get_ai_prediction():
-    image = request.files.get('user_file')
-    if not image:
-        return jsonify({"prediction": "Error"}), 400
+    if 'aiImage' not in request.files:
+        return jsonify({"prediction": "Error, no file uploaded"}), 400
+    image = request.files['ai_image']
     ai_prediction = predict(image.stream)
     return jsonify({"prediction": ai_prediction})
 
