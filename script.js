@@ -2,7 +2,12 @@ const backend_url = "https://procid-ocr-rrecognition-backend.hf.space/api/predic
 
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("sub");
-    btn.addEventListener("click", async (e) => {
+    btn.addEventListener("click", processOCR);
+
+    
+});
+
+async function processOCR(e) {
         e.preventDefault(); 
         const fileInput = document.getElementById("imageUpload");
         const output = document.getElementById("output");
@@ -37,6 +42,4 @@ document.addEventListener("DOMContentLoaded", () => {
         } finally {
             btn.disabled = false;
         }
-    });
-
-});
+    }
