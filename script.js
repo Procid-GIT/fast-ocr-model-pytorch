@@ -18,7 +18,7 @@ async function processOCR(e) {
         }
 
         const formData = new FormData();
-        formData.append("aiImage", fileInput.files[0]);
+        formData.append('aiImage', fileInput.files[0]);
         try {
             btn.disabled = true;
             output.textContent = "...";
