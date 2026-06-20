@@ -34,7 +34,7 @@ def predict(image):
             ])
 
             x = transform(image_input).unsqueeze(0)
-            x = torch.transpose(x, 2, 3) 
+            x = torch.transpose(2, 3) 
 
             print(f"[AI] AI is thinking...")
             with torch.no_grad():
