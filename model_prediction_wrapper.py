@@ -34,12 +34,21 @@ def predict():
         try:
             image = Image.open(file_path).convert("L")
 
+            
+            import numpy as np
+            img_np = np.array(image)
+            if img_np.mean() > 127: 
+                from PIL import ImageOps
+                image = ImageOps.invert(image)
+                print("[Status] Light image detected. Automatically converted to Dark Mode for the AI!")
+            else:
+                print("[Status] Native Dark Mode image detected. Processing directly.")
             transform = transforms.Compose([
                 transforms.Resize((28, 28)),
                 transforms.ToTensor(),
                 transforms.Normalize(mean=(0.1751,), std=(0.3332,))
             ])
-
+            
             x = transform(image).unsqueeze(0)
 
             print(f"[AI] AI is thinking...")
