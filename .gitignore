@@ -1,2 +1,3 @@
 # Exclude the downloaded EMNIST data folder
 data/
+Model/__pycache__

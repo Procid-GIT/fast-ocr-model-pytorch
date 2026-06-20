@@ -50,6 +50,7 @@ def predict():
             ])
 
             x = transform(image).unsqueeze(0)
+            x = x.transpose(2, 3)
 
             print(f"[AI] AI is thinking...")
             with torch.no_grad():
