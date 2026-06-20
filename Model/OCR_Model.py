@@ -114,3 +114,5 @@ if __name__ == "__main__":
     torch.save(model.state_dict(), "OCR_Model.pt")
     print(f"[{datetime.now()}][Status] Done! Exiting program...")
     exit(0)
+
+# TODO: Retrain model after adding new layer
