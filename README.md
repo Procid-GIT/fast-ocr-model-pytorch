@@ -12,3 +12,5 @@ The AI can recognize sentences, though its quite inacurrate and early in testing
   which contain the model's pt and the program for interacting with it.  </p>
 
 <p>Latest notes:  The AI is accurate, its bad at reading sentences as of now, and the sentence reading feature is not available to the public in releases.  It is, however in the github repo if you want to try it for yourself.</p>
+
+<p>Fun fact, I'm 14 and i made this</p>
