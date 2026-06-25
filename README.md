@@ -1,5 +1,5 @@
-# OCR-Model
-Simple OCR for recognizing just individual characters as of now.
+# OCR Model
+Simple OCR for recognizing just individual characters as of now, that I made.
 ![alt text](image.png)
 ![alt text](image-1.png)
 _______________________________
