@@ -25,6 +25,31 @@ def prediction_decode(output):
 
     return predicted_char, conf_p
 
+import cv2
+import numpy as np
+
+def prepare_for_emnist(cropped_char_img):
+    # 1. Get current crop dimensions
+    char_np = np.array(char_crop)
+    char_np = np.where(char_np > 50, 255, 0).astype(np.uint8)
+    char_crop = Image.fromarray(char_np)
+
+
+    h, w = cropped_char_img.size
+    max_side = max(h, w)
+    
+    # 2. Create a perfect black square canvas based on the largest side
+    square_canvas = np.zeros((max_side, max_side), dtype=np.uint8)
+    
+    # 3. Center the letter right in the middle (prevents stretching!)
+    offset_y = (max_side - h) // 2
+    offset_x = (max_side - w) // 2
+    square_canvas[offset_y:offset_y+h, offset_x:offset_x+w] = cropped_char_img
+    
+    # 4. Safely resize the proportional square down to EMNIST's 28x28
+    return cv2.resize(square_canvas, (28, 28))
+
+
 def slice_sentences():
     file_path = filedialog.askopenfilename(
         title="Open Image",
@@ -91,14 +116,7 @@ def slice_sentences():
                     char_crop = char_crop.crop(bbox) # Neatly trims top/bottom whitespace
                 
                 
-                char_np = np.array(char_crop)
-                char_np = np.where(char_np > 50, 255, 0).astype(np.uint8)
-                char_crop = Image.fromarray(char_np)
-
-                w, h = char_crop.size
-                max_dim = max(w, h) + 4
-                square_img = Image.new('L', (max_dim, max_dim), 0)
-                square_img.paste(char_crop, ((max_dim - w) // 2, (max_dim - h) // 2))
+                square_img = prepare_for_emnist(char_crop)
 
                 pchar = predict(square_img)
 
