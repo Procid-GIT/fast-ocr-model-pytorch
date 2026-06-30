@@ -5,7 +5,7 @@ from flask_cors import CORS
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 sys.path.append(parent_dir)
-from model_prediction_wrapper import predict
+from model_prediction_wrapper import slice_sentences
 
 app = Flask(__name__)
 
@@ -16,7 +16,7 @@ def get_ai_prediction():
     if 'aiImage' not in request.files:
         return jsonify({"prediction": "Error, no file uploaded"}), 400
     image = request.files['ai_image']
-    ai_prediction = predict(image.stream)
+    ai_prediction = slice_sentences(image.stream)
     return jsonify({"prediction": ai_prediction})
 
 
